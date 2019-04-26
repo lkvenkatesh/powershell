@@ -1,0 +1,7 @@
+#Get-Multiple server event id through powershell
+
+$servers = Get-Content -Path C:\Users\xbbj88h\Desktop\servers.txt
+$s = New-PSSession -ComputerName $servers -Credential domain\id
+Invoke-Command -Session $s -ScriptBlock {Get-EventLog system -source user32 -Newest 1 | fl * } 
+
+
