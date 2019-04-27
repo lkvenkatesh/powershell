@@ -1,8 +1,53 @@
-$servers = Get-Content -Path C:\Users\xbbj88h\Desktop\servers.txt
-$s = New-PSSession -ComputerName $servers -Credential pac\sxbbj88h
+$servers = Get-Content -Path C:\Users\id\Desktop\servers.txt
+$s = New-PSSession -ComputerName $servers -Credential pac\id
 Invoke-Command -Session $s -ScriptBlock {Get-PSDrive -PSProvider FileSystem | Format-Table Name, 
 @{Name="Disk Size(GB)";Expression={"{0,10:N0}" -f($_.free/1gb +$_.used/1gb)}},
 @{Name="Free (%)";Expression={"{0,10:P0}" -f($_.free / ($_.free +$_.used))}} `
 -AutoSize}
 Remove-PSSession $s
 Exit-PSSession
+
+
+
+==========================================================
+
+OUTPUT
+
+=========================================================
+                           
+Name Disk Size(GB) Free (%)  
+---- ------------- --------  
+A             0              
+C           128          82 %
+D            40          99 %
+Q             1          95 %
+X             0              
+
+
+
+Name Disk Size(GB) Free (%)  
+---- ------------- --------  
+C           128           6 %
+D           384          87 %
+L           431          34 %
+
+
+
+Name Disk Size(GB) Free (%)  
+---- ------------- --------  
+A             0              
+C           128          51 %
+D           470          23 %
+Q             1          95 %
+X             0              
+
+
+
+Name Disk Size(GB) Free (%)  
+---- ------------- --------  
+A             0              
+C           128          71 %
+D           100          86 %
+Q             1          95 %
+X             0              
+
