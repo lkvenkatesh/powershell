@@ -1,0 +1,37 @@
+# This is the script for "To get the Last Boot Time and uptime of one or more server"
+############
+
+$Computerlist = Get-Content "C:\servers.txt"
+$i=1
+
+$output = 
+foreach($ComputerName in $Computerlist){
+#$ComputerName = ‘wsomtaplms07’
+Try{
+$os = Get-WmiObject -Class Win32_OperatingSystem -ComputerName $computername
+}
+Catch [System.UnauthorizedAccessException]
+{
+write-host "Access is denied $ComputerName"
+Continue
+}
+Finally
+{	
+}
+$diff = $os.ConvertToDateTime($os.LocalDateTime) – $os.ConvertToDateTime($os.LastBootUpTime)
+
+$properties=@{
+		‘ComputerName’=$ComputerName;
+		‘LastBootTime’=$os.ConvertToDateTime($os.LastBootUpTime);
+		‘UptimeDays’=$diff.Days;
+		‘UptimeHours’=$diff.Hours;
+		‘UptimeMinutes’=$diff.Minutes;
+		‘UptimeSeconds’=$diff.Seconds;
+}
+$obj = New-Object -TypeName PSObject -Property $properties
+Write-Output $obj
+write-host "..$ComputerName...$i"
+$i++
+}
+
+$output | Out-file -FilePath "c:\powershell\output.txt"
