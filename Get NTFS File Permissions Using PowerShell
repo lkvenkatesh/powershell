@@ -1,0 +1,13 @@
+#  You will return the NTFS permissions set on the current working directory
+Get-Acl -Path C:\temp | Format-Table -Wrap
+
+# If you want to generate a report on a folder hierarchy
+
+$FolderPath = Get-ChildItem -Directory -Path "C:\temp" -Recurse -Force
+ForEach ($Folder in $FolderPath) {
+   $Acl = Get-Acl -Path $Folder.FullName
+   ForEach ($Access in $Acl.Access) {
+$Properties = [ordered]@{'Folder Name'=$Folder.FullName;'Group/User'=$Access.IdentityReference;'Permissions'=$Access.FileSystemRights;'Inherited'=$Access.IsInherited}
+New-Object -TypeName PSObject -Property $Properties
+           }
+}
